@@ -1,9 +1,9 @@
 .keyboard {
-    display: flex;
+    display: block;
     border: 2px solid gray;
     border-radius: 5px;
-    flex-wrap: wrap;
     &__title{
+        display: inline-block;
         margin: 5px;
         font-size: 12px;
         font-style: italic;
@@ -11,6 +11,17 @@
         border-radius: 5px;
         padding: 2px;
         background: #673ab763;
+        width: 10%;
+    }
+    &__lang{
+        float: right;
+        margin: 5px 14px;
+        font-size: 12px;
+        font-weight: bold;
+        border-radius: 50%;
+        padding: 4px;
+        background-color: #0000ffc2;
+        color: #FFEB3B;
     }
     &__row {
         padding: 4px;
