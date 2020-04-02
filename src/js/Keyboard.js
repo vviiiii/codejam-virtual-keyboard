@@ -1,13 +1,21 @@
+const keyButtonModule = require('./KeyButton');
+const keyBoardRowsModule = require('./KeyboardRows');
+
+const KeyButton = keyButtonModule.default;
+const KeyBoardRows = keyBoardRowsModule.default;
 class Keyboard {
-  constructor(lang) {
+  constructor(lang, keys) {
+    this.keys = keys;
     this.lang = lang;
     this.capsLock = 'off';
+    this.keyButtonsHTML = '';
+    this.keyboardRowsHTML = '';
     this.keyboardLangHTML = '';
     this.keyboardIdHTML = '';
     this.keyButtonsHTML = '';
     this.textAreaHTML = '';
-    this.buttonsSpanRuArrHTML = [];
-    this.buttonsSpanEnArrHTML = [];
+    this.buttonsSpanKeyLangRuArrHTML = [];
+    this.buttonsSpanKeyLangEnArrHTML = [];
     this.selectedButtonHTML = '';
     this.selectedButtonValue = '';
   }
@@ -33,11 +41,27 @@ class Keyboard {
     return keyboardTemplate;
   }
 
+  generateKeyButtons() {
+    const keyButtons = [];
+    this.keys.forEach((keyButton) => {
+      keyButtons.push(new KeyButton(keyButton));
+    });
+    this.keyButtonsHTML = keyButtons;
+  }
+
+  generateKeyboardRowsHTML() {
+    this.keyboardRowsHTML = new KeyBoardRows('.keyboard__row', this.keyButtonsHTML);
+  }
+
   buildKeyboard() {
+    this.generateKeyButtons();
+    this.generateKeyboardRowsHTML();
+    this.renderKeyboardTemaplate();
     this.keyboardIdHTML = document.getElementById('keyboard');
     this.textAreaHTML = document.getElementById('input');
     this.keyButtonsHTML = document.querySelectorAll('.keyboard__item');
     this.keyboardLangHTML = document.querySelector('.keyboard__lang > span');
+    this.bindEvents();
   }
 
   bindEvents() {
@@ -88,6 +112,8 @@ class Keyboard {
           }
           break;
         case 'CapsLock':
+          this.changeKeyboardButtonsContent();
+          break;
         case 'Tab':
         case 'Delete':
         case 'Enter':
@@ -125,9 +151,9 @@ class Keyboard {
     console.log(e);
   }
 
-
   renderKeyboardTemaplate() {
     document.body.innerHTML = this.generateKeyboardTemaplate();
+    this.keyboardRowsHTML.renderKeyboardRows();
   }
 
   getButtonValue() {
@@ -147,11 +173,31 @@ class Keyboard {
     this.textAreaHTML.value = this.textAreaHTML.value.slice(0, -1);
   }
 
+  changeKeyboardButtonsContent() {
+    this.getButtonsSpanRuHTML();
+    this.getButtonsSpanEnHTML();
+    // console.log(this.buttonsSpanKeyLangEnArrHTML);
+    this.toggleHiddenSpanKeyCaseClass();
+  }
+
+  toggleHiddenSpanKeyCaseClass() {
+    this.buttonsSpanKeyLangRuArrHTML.forEach((elem) => {
+      console.log(elem.querySelector(`.key__case-${this.capsLock}`));
+      elem.querySelector('.key__case-on').classList.toggle('hidden');
+      elem.querySelector('.key__case-off').classList.toggle('hidden');
+    });
+    this.buttonsSpanKeyLangEnArrHTML.forEach((elem) => {
+      elem.querySelector('.key__case-on').classList.toggle('hidden');
+      elem.querySelector('.key__case-off').classList.toggle('hidden');
+    });
+    this.clearSpanKeyLangArrsHTML();
+  }
+
   changeKeyboardLanguage() {
     this.lang = this.lang === 'ru' ? 'en' : 'ru';
     this.getButtonsSpanRuHTML();
     this.getButtonsSpanEnHTML();
-    this.toggleHiddenClass();
+    this.toggleHiddenSpanKeyLangClass();
     console.log(this);
     // console.log(this.keyButtonsHTML.querySelectorAll(`.key.lang-${this.lang}`));
     this.keyboardLangHTML.innerText = this.lang;
@@ -160,7 +206,7 @@ class Keyboard {
   getButtonsSpanRuHTML() {
     [...this.keyButtonsHTML].forEach((elem) => {
       [...elem.querySelectorAll('.key.lang-ru')].forEach((el) => {
-        this.buttonsSpanRuArrHTML.push(el);
+        this.buttonsSpanKeyLangRuArrHTML.push(el);
       });
     });
   }
@@ -168,20 +214,24 @@ class Keyboard {
   getButtonsSpanEnHTML() {
     [...this.keyButtonsHTML].forEach((elem) => {
       [...elem.querySelectorAll('.key.lang-en')].forEach((el) => {
-        this.buttonsSpanEnArrHTML.push(el);
+        this.buttonsSpanKeyLangEnArrHTML.push(el);
       });
     });
   }
 
-  toggleHiddenClass() {
-    this.buttonsSpanRuArrHTML.forEach((elem) => {
+  toggleHiddenSpanKeyLangClass() {
+    this.buttonsSpanKeyLangRuArrHTML.forEach((elem) => {
       elem.classList.toggle('hidden');
     });
-    this.buttonsSpanEnArrHTML.forEach((elem) => {
+    this.buttonsSpanKeyLangEnArrHTML.forEach((elem) => {
       elem.classList.toggle('hidden');
     });
-    this.buttonsSpanEnArrHTML = [];
-    this.buttonsSpanRuArrHTML = [];
+    this.clearSpanKeyLangArrsHTML();
+  }
+
+  clearSpanKeyLangArrsHTML() {
+    this.buttonsSpanKeyLangEnArrHTML = [];
+    this.buttonsSpanKeyLangRuArrHTML = [];
   }
 }
 

@@ -128,7 +128,7 @@ const keys = [
         shift: '*',
       },
       en: {
-        caseOnKey: '*',
+        caseOnKey: '8',
         caseOffKey: '8',
         shift: '*',
       },
