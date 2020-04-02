@@ -9,6 +9,7 @@ body {
         rgba(255,255,255, 0) .9em, rgba(0, 0, 0, .15) 1em) 0 0;
     background-size: 1em 1em;
     background-color: ivory;
+    @extend %font-prim;
 }
 
 .wrapper{
@@ -29,6 +30,7 @@ textarea {
     font-size: 14px;
     background: #eae5e5;
     max-height: 202px;
+    width: 800px;
     padding: 5px 7px;
     outline: none;
     border-radius: 5px;

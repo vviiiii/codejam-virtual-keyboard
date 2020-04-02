@@ -13,7 +13,7 @@
         border-radius: 5px;
         padding: 2px;
         background: #673ab763;
-        width: 10%;
+        width: 45%;
     }
     &__lang{
         float: right;
@@ -34,7 +34,7 @@
     &__item {
         border: 2px solid black;
         border-radius: 7px;
-        font-size: 20px;
+        font-size: 16px;
         padding: 10px;
         transition: all .07s ease;
         width: 55px;
@@ -70,6 +70,9 @@
             border-color: #b8cd0ad9;
             box-shadow: 0 0 1rem #100e0efa;
             background-color: #080707d9 !important;
+        }
+        &_capslock {
+            background-color: green !important;
         }
     }
 }
