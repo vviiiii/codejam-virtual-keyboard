@@ -1,5 +1,6 @@
 .keyboard {
     display: block;
+    padding: 14px;
     border: 2px solid gray;
     border-radius: 5px;
     background: #eee9e9;
@@ -22,8 +23,8 @@
         font-weight: bold;
         border-radius: 50%;
         padding: 4px;
-        background-color: #0000ffc2;
-        color: #FFEB3B;
+        background-color: #0e0e0e;
+        color: #04fc04;
     }
     &__row {
         padding: 4px;
@@ -46,7 +47,6 @@
         &[data-code*='Control'],
         &[data-code*='Shift'],
         &[data-code='CapsLock'],
-        &[data-code='Tab'],
         &[data-code='Enter'] {
             width: 110px;
         }
