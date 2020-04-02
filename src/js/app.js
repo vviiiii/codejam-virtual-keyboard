@@ -25,4 +25,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const virtualKeyboardRows = new KeyBoardRows('.keyboard__row', keyButtons);
   virtualKeyboardRows.renderKeyboardRows();
   /* end create virtualKeyboard */
+  /* handler events */
+  virtualKeyboard.buildKeyboard();
+  virtualKeyboard.bindEvents();
 });

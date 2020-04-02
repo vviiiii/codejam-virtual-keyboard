@@ -5,10 +5,12 @@ const keys = [
       ru: {
         caseOnKey: 'Ё',
         caseOffKey: 'ё',
+        shift: 'Ё',
       },
       en: {
-        caseOnKey: '~',
+        caseOnKey: '`',
         caseOffKey: '`',
+        shift: '~',
       },
     },
   },
@@ -16,12 +18,14 @@ const keys = [
     code: 'Digit1',
     lang: {
       ru: {
-        caseOnKey: '!',
+        caseOnKey: '1',
         caseOffKey: '1',
+        shift: '!',
       },
       en: {
-        caseOnKey: '!',
+        caseOnKey: '1',
         caseOffKey: '1',
+        shift: '!',
       },
     },
   },
@@ -29,12 +33,14 @@ const keys = [
     code: 'Digit2',
     lang: {
       ru: {
-        caseOnKey: '"',
+        caseOnKey: '2',
         caseOffKey: '2',
+        shift: '"',
       },
       en: {
-        caseOnKey: '@',
+        caseOnKey: '2',
         caseOffKey: '2',
+        shift: '@',
       },
     },
   },
@@ -42,12 +48,14 @@ const keys = [
     code: 'Digit3',
     lang: {
       ru: {
-        caseOnKey: '№',
+        caseOnKey: '3',
         caseOffKey: '3',
+        shift: '№',
       },
       en: {
-        caseOnKey: '#',
+        caseOnKey: '3',
         caseOffKey: '3',
+        shift: '#',
       },
     },
   },
@@ -55,12 +63,14 @@ const keys = [
     code: 'Digit4',
     lang: {
       ru: {
-        caseOnKey: ';',
+        caseOnKey: '4',
         caseOffKey: '4',
+        shift: ';',
       },
       en: {
-        caseOnKey: '$',
+        caseOnKey: '4',
         caseOffKey: '4',
+        shift: '$',
       },
     },
   },
@@ -68,12 +78,14 @@ const keys = [
     code: 'Digit5',
     lang: {
       ru: {
-        caseOnKey: '%',
+        caseOnKey: '5',
         caseOffKey: '5',
+        shift: '%',
       },
       en: {
-        caseOnKey: '%',
+        caseOnKey: '5',
         caseOffKey: '5',
+        shift: '%',
       },
     },
   },
@@ -81,12 +93,14 @@ const keys = [
     code: 'Digit6',
     lang: {
       ru: {
-        caseOnKey: ':',
+        caseOnKey: '6',
         caseOffKey: '6',
+        shift: ':',
       },
       en: {
-        caseOnKey: '^',
+        caseOnKey: '6',
         caseOffKey: '6',
+        shift: '^',
       },
     },
   },
@@ -94,12 +108,14 @@ const keys = [
     code: 'Digit7',
     lang: {
       ru: {
-        caseOnKey: '&',
+        caseOnKey: '7',
         caseOffKey: '7',
+        shift: '&',
       },
       en: {
-        caseOnKey: '?',
+        caseOnKey: '7',
         caseOffKey: '7',
+        shift: '?',
       },
     },
   },
@@ -107,12 +123,14 @@ const keys = [
     code: 'Digit8',
     lang: {
       ru: {
-        caseOnKey: '*',
+        caseOnKey: '8',
         caseOffKey: '8',
+        shift: '*',
       },
       en: {
         caseOnKey: '*',
         caseOffKey: '8',
+        shift: '*',
       },
     },
   },
@@ -120,12 +138,14 @@ const keys = [
     code: 'Digit9',
     lang: {
       ru: {
-        caseOnKey: '(',
+        caseOnKey: '9',
         caseOffKey: '9',
+        shift: '(',
       },
       en: {
-        caseOnKey: '(',
+        caseOnKey: '9',
         caseOffKey: '9',
+        shift: '(',
       },
     },
   },
@@ -133,12 +153,14 @@ const keys = [
     code: 'Digit0',
     lang: {
       ru: {
-        caseOnKey: ')',
+        caseOnKey: '0',
         caseOffKey: '0',
+        shift: ')',
       },
       en: {
-        caseOnKey: ')',
+        caseOnKey: '0',
         caseOffKey: '0',
+        shift: ')',
       },
     },
   },
@@ -146,12 +168,14 @@ const keys = [
     code: 'Minus',
     lang: {
       ru: {
-        caseOnKey: '_',
+        caseOnKey: '-',
         caseOffKey: '-',
+        shift: '_',
       },
       en: {
-        caseOnKey: '_',
+        caseOnKey: '-',
         caseOffKey: '-',
+        shift: '_',
       },
     },
   },
@@ -159,12 +183,14 @@ const keys = [
     code: 'Equal',
     lang: {
       ru: {
-        caseOnKey: '+',
+        caseOnKey: '=',
         caseOffKey: '=',
+        shift: '+',
       },
       en: {
-        caseOnKey: '+',
+        caseOnKey: '=',
         caseOffKey: '=',
+        shift: '+',
       },
     },
   },
@@ -744,12 +770,12 @@ const keys = [
     code: 'Space',
     lang: {
       ru: {
-        caseOnKey: '',
-        caseOffKey: '',
+        caseOnKey: ' ',
+        caseOffKey: ' ',
       },
       en: {
-        caseOnKey: '',
-        caseOffKey: '',
+        caseOnKey: ' ',
+        caseOffKey: ' ',
       },
     },
   },
