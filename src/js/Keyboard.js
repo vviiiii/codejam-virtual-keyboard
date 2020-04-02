@@ -6,6 +6,8 @@ class Keyboard {
     this.keyboardIdHTML = '';
     this.keyButtonsHTML = '';
     this.textAreaHTML = '';
+    this.buttonsSpanRuArrHTML = [];
+    this.buttonsSpanEnArrHTML = [];
     this.selectedButtonHTML = '';
     this.selectedButtonValue = '';
   }
@@ -147,8 +149,39 @@ class Keyboard {
 
   changeKeyboardLanguage() {
     this.lang = this.lang === 'ru' ? 'en' : 'ru';
-    // console.log(this.lang);
+    this.getButtonsSpanRuHTML();
+    this.getButtonsSpanEnHTML();
+    this.toggleHiddenClass();
+    console.log(this);
+    // console.log(this.keyButtonsHTML.querySelectorAll(`.key.lang-${this.lang}`));
     this.keyboardLangHTML.innerText = this.lang;
+  }
+
+  getButtonsSpanRuHTML() {
+    [...this.keyButtonsHTML].forEach((elem) => {
+      [...elem.querySelectorAll('.key.lang-ru')].forEach((el) => {
+        this.buttonsSpanRuArrHTML.push(el);
+      });
+    });
+  }
+
+  getButtonsSpanEnHTML() {
+    [...this.keyButtonsHTML].forEach((elem) => {
+      [...elem.querySelectorAll('.key.lang-en')].forEach((el) => {
+        this.buttonsSpanEnArrHTML.push(el);
+      });
+    });
+  }
+
+  toggleHiddenClass() {
+    this.buttonsSpanRuArrHTML.forEach((elem) => {
+      elem.classList.toggle('hidden');
+    });
+    this.buttonsSpanEnArrHTML.forEach((elem) => {
+      elem.classList.toggle('hidden');
+    });
+    this.buttonsSpanEnArrHTML = [];
+    this.buttonsSpanRuArrHTML = [];
   }
 }
 
