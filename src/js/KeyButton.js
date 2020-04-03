@@ -14,12 +14,14 @@ class KeyButton {
     if (this.code) {
       template += `
         <span class="key lang-en hidden">
-        <span class="key__case-on hidden">${this.langEn.caseOnKey}</span>
-        <span class="key__case-off">${this.langEn.caseOffKey}</span>
+          <span class="key__case-on hidden">${this.langEn.caseOnKey}</span>
+          <span class="key__case-shift hidden">${this.langEn.shift || this.langEn.caseOnKey}</span>
+          <span class="key__case-off">${this.langEn.caseOffKey}</span>
         </span>
         <span class="key lang-ru ">
-            <span class="key__case-on hidden">${this.langRu.caseOnKey}</span>
-            <span class="key__case-off">${this.langRu.caseOffKey}</span>
+          <span class="key__case-on hidden">${this.langRu.caseOnKey}</span>
+          <span class="key__case-shift hidden">${this.langRu.shift || this.langRu.caseOnKey}</span>
+          <span class="key__case-off">${this.langRu.caseOffKey}</span>
         </span>
     `;
     }

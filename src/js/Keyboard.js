@@ -24,11 +24,10 @@ class Keyboard {
     const keyboardTemplate = `
     <div class="wrapper">
     <form action="#" class="input">
-        <textarea name="input__area" id="input" cols="100" rows="10">
-        </textarea>
+        <textarea name="input__area" id="input" cols="100" rows="10"></textarea>
     </form>
     <section id="keyboard" class="keyboard">
-        <h1 class="keyboard__title">Virtual Keyboard: Переключение языка LeftAlt+LeftShift</h1> 
+        <h1 class="keyboard__title">Virtual Keyboard: Переключение языка LeftCtrl+LeftAlt</h1> 
         <div class="keyboard__lang"><span>${this.lang}</span></div>
         <hr>
         <div class="keyboard__row"></div>
@@ -99,30 +98,48 @@ class Keyboard {
       return undefined;
     });
     if (this.selectedButtonHTML) {
-      this.getButtonValue();
+      this.getButtonValue(e);
       this.addActiveToButton();
       switch (e.code) {
         case 'Backspace':
           this.delInputValue();
           break;
         case 'ControlLeft':
-        case 'ShiftLeft':
-          if (e.altKey && e.shiftKey) {
+          console.log(e);
+          if (e.altKey && e.ctrlKey) {
             this.changeKeyboardLanguage();
           }
           break;
+        case 'ShiftLeft':
+          if (!e.repeat) {
+            this.changeKeyboardButtonsContent();
+            console.log(this);
+          }
+          break;
         case 'CapsLock':
-          this.changeKeyboardButtonsContent();
+          if (!e.repeat) {
+            this.changeKeyboardButtonsContent();
+          }
           break;
         case 'Tab':
+          break;
         case 'Delete':
+          break;
         case 'Enter':
+          break;
         case 'ShiftRight':
+          if (!e.repeat) {
+            this.changeKeyboardButtonsContent();
+          }
+          break;
         case 'ControlRight':
+          break;
         case 'MetaLeft':
+          break;
         case 'AltRight':
+          break;
         case 'AltLeft':
-          if (e.altKey && e.shiftKey) {
+          if (e.altKey && e.ctrlKey) {
             this.changeKeyboardLanguage();
           }
           break;
@@ -136,8 +153,35 @@ class Keyboard {
     // console.log(e);
     // console.log(this.slectedElement.dataset.code);
     this.removeActiveButtons();
-    if (e.code === 'CapsLock') {
-      this.toggleCapsLockButton();
+    switch (e.code) {
+      case 'Backspace':
+        break;
+      case 'ControlLeft':
+        break;
+      case 'ShiftLeft':
+        this.changeKeyboardButtonsContent();
+        break;
+      case 'CapsLock':
+        this.toggleCapsLockButton();
+        break;
+      case 'Tab':
+        break;
+      case 'Delete':
+        break;
+      case 'Enter':
+        break;
+      case 'ShiftRight':
+        this.changeKeyboardButtonsContent();
+        break;
+      case 'ControlRight':
+        break;
+      case 'MetaLeft':
+        break;
+      case 'AltRight':
+        break;
+      case 'AltLeft':
+        break;
+      default:
     }
   }
 
@@ -156,9 +200,16 @@ class Keyboard {
     this.keyboardRowsHTML.renderKeyboardRows();
   }
 
-  getButtonValue() {
-    const spanLangCaps = this.selectedButtonHTML.querySelector(`.key.lang-${this.lang} `)
-      .querySelector(`.key__case-${this.capsLock}`);
+  getButtonValue(e) {
+    let spanLangCaps = this.selectedButtonHTML.querySelector(`.key.lang-${this.lang} `);
+    if (!e.shiftKey) {
+      spanLangCaps = spanLangCaps.querySelector(`.key__case-${this.capsLock}`);
+    } else if (e.shiftKey && this.capsLock === 'off') {
+      spanLangCaps = spanLangCaps.querySelector('.key__case-shift');
+    } else if (e.shiftKey && this.capsLock === 'on') {
+      spanLangCaps = spanLangCaps.querySelector('.key__case-off');
+    }
+
     // console.log(this.capsLock);
     // console.log(spanLangCaps.querySelector(`.key__case-${this.capsLock}`));
     this.selectedButtonValue = spanLangCaps.innerHTML;
@@ -178,19 +229,24 @@ class Keyboard {
     this.getButtonsSpanEnHTML();
     // console.log(this.buttonsSpanKeyLangEnArrHTML);
     this.toggleHiddenSpanKeyCaseClass();
+    this.clearSpanKeyLangArrsHTML();
   }
 
   toggleHiddenSpanKeyCaseClass() {
     this.buttonsSpanKeyLangRuArrHTML.forEach((elem) => {
-      console.log(elem.querySelector(`.key__case-${this.capsLock}`));
-      elem.querySelector('.key__case-on').classList.toggle('hidden');
-      elem.querySelector('.key__case-off').classList.toggle('hidden');
+      this.toggleHiddenSpanKeyCaseElements(elem);
     });
     this.buttonsSpanKeyLangEnArrHTML.forEach((elem) => {
-      elem.querySelector('.key__case-on').classList.toggle('hidden');
-      elem.querySelector('.key__case-off').classList.toggle('hidden');
+      this.toggleHiddenSpanKeyCaseElements(elem);
     });
-    this.clearSpanKeyLangArrsHTML();
+  }
+
+
+  toggleHiddenSpanKeyCaseElements(elem) {
+    this.keyCaseOn = elem.querySelector('.key__case-on');
+    this.keyCaseOff = elem.querySelector('.key__case-off');
+    this.keyCaseOn.classList.toggle('hidden');
+    this.keyCaseOff.classList.toggle('hidden');
   }
 
   changeKeyboardLanguage() {
@@ -201,6 +257,7 @@ class Keyboard {
     console.log(this);
     // console.log(this.keyButtonsHTML.querySelectorAll(`.key.lang-${this.lang}`));
     this.keyboardLangHTML.innerText = this.lang;
+    this.clearSpanKeyLangArrsHTML();
   }
 
   getButtonsSpanRuHTML() {
@@ -226,7 +283,6 @@ class Keyboard {
     this.buttonsSpanKeyLangEnArrHTML.forEach((elem) => {
       elem.classList.toggle('hidden');
     });
-    this.clearSpanKeyLangArrsHTML();
   }
 
   clearSpanKeyLangArrsHTML() {
