@@ -358,8 +358,9 @@ const keys = [
         caseOffKey: 'х',
       },
       en: {
-        caseOnKey: '{',
+        caseOnKey: '[',
         caseOffKey: '[',
+        shift: '{',
       },
     },
   },
@@ -371,8 +372,9 @@ const keys = [
         caseOffKey: 'ъ',
       },
       en: {
-        caseOnKey: '}',
+        caseOnKey: ']',
         caseOffKey: ']',
+        shift: '}',
       },
     },
   },
@@ -380,12 +382,14 @@ const keys = [
     code: 'Backslash',
     lang: {
       ru: {
-        caseOnKey: '/',
+        caseOnKey: '\\',
         caseOffKey: '\\',
+        shift: '/',
       },
       en: {
-        caseOnKey: '|',
+        caseOnKey: '\\',
         caseOffKey: '\\',
+        shift: '|',
       },
     },
   },
@@ -540,8 +544,9 @@ const keys = [
         caseOffKey: 'ж',
       },
       en: {
-        caseOnKey: ':',
+        caseOnKey: ';',
         caseOffKey: ';',
+        shift: ':',
       },
     },
   },
@@ -553,8 +558,9 @@ const keys = [
         caseOffKey: 'э',
       },
       en: {
-        caseOnKey: '"',
+        caseOnKey: '\'',
         caseOffKey: '\'',
+        shift: '"',
       },
     },
   },
@@ -683,8 +689,9 @@ const keys = [
         caseOffKey: 'б',
       },
       en: {
-        caseOnKey: '<',
+        caseOnKey: ',',
         caseOffKey: ',',
+        shift: '<',
       },
     },
   },
@@ -696,8 +703,9 @@ const keys = [
         caseOffKey: 'ю',
       },
       en: {
-        caseOnKey: '>',
+        caseOnKey: '.',
         caseOffKey: '.',
+        shift: '>',
       },
     },
   },
@@ -718,12 +726,14 @@ const keys = [
     code: 'Slash',
     lang: {
       ru: {
-        caseOnKey: ',',
+        caseOnKey: '.',
         caseOffKey: '.',
+        shift: ',',
       },
       en: {
-        caseOnKey: '?',
+        caseOnKey: '/',
         caseOffKey: '/',
+        shift: '?',
       },
     },
   },
