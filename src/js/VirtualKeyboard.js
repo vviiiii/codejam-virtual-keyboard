@@ -158,7 +158,7 @@ class VirtualKeyboard {
     this.addActiveClassToKeyboardItem(pressedKeyboardItem);
     switch (e.code) {
       case 'Backspace':
-        this.processingBackspaceKeyboardItem();
+        this.processingDeleteBackspaceKeyboardItem('Backspace');
         break;
       case 'ControlLeft':
         if (e.altKey && e.ctrlKey) {
@@ -180,7 +180,7 @@ class VirtualKeyboard {
         this.processingTabKeyboardItem();
         break;
       case 'Delete':
-        this.processingDeleteKeyboardItem();
+        this.processingDeleteBackspaceKeyboardItem('Delete');
         break;
       case 'Enter':
         this.processingEnterKeyboardItem();
@@ -197,6 +197,18 @@ class VirtualKeyboard {
         if (e.altKey && e.ctrlKey) {
           this.changeKeyboardLanguage(this.keyboardItems);
         }
+        break;
+      case 'ArrowLeft':
+        this.processingArrowKeyboardItem('ArrowLeft');
+        break;
+      case 'ArrowRight':
+        this.processingArrowKeyboardItem('ArrowRight');
+        break;
+      case 'ArrowUp':
+        this.processingArrowKeyboardItem('ArrowUp');
+        break;
+      case 'ArrowDown':
+        this.processingArrowKeyboardItem('ArrowDown');
         break;
       default:
         this.setKeyboardItemInnerTextToTextarea(pressedKeyboardItem);
@@ -259,7 +271,7 @@ class VirtualKeyboard {
 
       switch (this.clickedElement.dataset.code) {
         case 'Backspace':
-          this.processingBackspaceKeyboardItem();
+          this.processingDeleteBackspaceKeyboardItem('Backspace');
           break;
         case 'ControlLeft':
           this.leftCtrl = this.leftCtrl === 'off' ? 'on' : 'off';
@@ -281,7 +293,7 @@ class VirtualKeyboard {
           this.processingTabKeyboardItem();
           break;
         case 'Delete':
-          this.processingDeleteKeyboardItem();
+          this.processingDeleteBackspaceKeyboardItem('Delete');
           break;
         case 'Enter':
           this.processingEnterKeyboardItem();
@@ -301,6 +313,18 @@ class VirtualKeyboard {
             this.leftCtrl = 'off';
             this.leftAlt = 'off';
           }
+          break;
+        case 'ArrowLeft':
+          this.processingArrowKeyboardItem('ArrowLeft');
+          break;
+        case 'ArrowRight':
+          this.processingArrowKeyboardItem('ArrowRight');
+          break;
+        case 'ArrowUp':
+          this.processingArrowKeyboardItem('ArrowUp');
+          break;
+        case 'ArrowDown':
+          this.processingArrowKeyboardItem('ArrowDown');
           break;
         default:
           this.setKeyboardItemInnerTextToTextarea(this.clickedElement);
@@ -468,22 +492,34 @@ class VirtualKeyboard {
       this.textarea.selectionStart, this.textarea.selectionEnd, 'end');
   }
 
-  processingBackspaceKeyboardItem() {
+  processingDeleteBackspaceKeyboardItem(keyboardItem) {
+    const cursorPositionPointer = (keyboardItem === 'Delete') ? 0 : 1;
     const textarea = [...this.textarea.value];
     const { selectionStart } = this.textarea;
-    textarea.splice(this.textarea.selectionStart - 1, 1);
+    textarea.splice(this.textarea.selectionStart - cursorPositionPointer, 1);
     this.textarea.value = textarea.join('');
-    this.textarea.selectionStart = selectionStart - 1;
-    this.textarea.selectionEnd = selectionStart - 1;
+    this.textarea.selectionStart = selectionStart - cursorPositionPointer;
+    this.textarea.selectionEnd = selectionStart - cursorPositionPointer;
   }
 
-  processingDeleteKeyboardItem() {
-    const textarea = [...this.textarea.value];
+  processingArrowKeyboardItem(arrow) {
     const { selectionStart } = this.textarea;
-    textarea.splice(this.textarea.selectionStart, 1);
-    this.textarea.value = textarea.join('');
-    this.textarea.selectionStart = selectionStart;
-    this.textarea.selectionEnd = selectionStart;
+    if (arrow === 'ArrowLeft') {
+      this.textarea.selectionStart = selectionStart - 1;
+      this.textarea.selectionEnd = selectionStart - 1;
+    }
+    if (arrow === 'ArrowRight') {
+      this.textarea.selectionStart = selectionStart + 1;
+      this.textarea.selectionEnd = selectionStart + 1;
+    }
+    if (arrow === 'ArrowUp') {
+      this.textarea.selectionStart = 0;
+      this.textarea.selectionEnd = 0;
+    }
+    if (arrow === 'ArrowDown') {
+      this.textarea.selectionStart = this.textarea.value.length;
+      this.textarea.selectionEnd = this.textarea.value.length;
+    }
   }
   /* end virtual keyboar main functions */
 }
