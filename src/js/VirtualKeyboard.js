@@ -8,6 +8,8 @@ class VirtualKeyboard {
     this.data = data;
     this.capslock = 'off';
     this.shift = 'off';
+    this.leftCtrl = 'off';
+    this.leftAlt = 'off';
   }
 
   /* main function */
@@ -15,7 +17,17 @@ class VirtualKeyboard {
     this.renderKeyboardTemaplate();
     this.renderKeyboardRowsTemplate();
     this.bindEventsHandlers();
+    this.setThisKeyboardItems();
+    this.setThisKeyboard();
     // console.info(this);
+  }
+
+  setThisKeyboard() {
+    this.keyboard = document.getElementById('keyboard');
+  }
+
+  setThisKeyboardItems() {
+    this.keyboardItems = document.querySelectorAll('.keyboard__item');
   }
 
   /* render functions */
@@ -26,7 +38,7 @@ class VirtualKeyboard {
             <textarea name="input__area" id="input" cols="100" rows="10"></textarea>
         </form>
         <section id="keyboard" class="keyboard">
-            <h1 class="keyboard__title">Virtual Keyboard создавалась в OS Windows: Переключение языка LeftCtrl+LeftAlt</h1> 
+            <h1 class="keyboard__title">Virtual Keyboard создавалась в OS Windows: Переключение языка LeftCtrl+LeftAlt на физической клавиатуре, либо кликом мышки на эти кнопки </h1> 
             <div class="keyboard__lang"><span>${this.lang}</span></div>
             <hr>
             <div class="keyboard__row"></div>
@@ -45,21 +57,21 @@ class VirtualKeyboard {
 
   /* Generate keyboardItems template */
   generateKeyboardItemsTemaplate() {
-    const keyboardItems = [];
+    const keyboardItemsArr = [];
     this.data.forEach((keyButton) => {
       const keyboardItem = new KeyboardItem(keyButton);
-      keyboardItems.push(keyboardItem.generateKeyboardItemTemplate());
+      keyboardItemsArr.push(keyboardItem.generateKeyboardItemTemplate());
     });
-    return keyboardItems;
+    return keyboardItemsArr;
   }
 
   generateKeyboardRowsContent() {
-    const keyboardItems = this.generateKeyboardItemsTemaplate();
-    const keyboardRow1 = keyboardItems.slice(0, 14);
-    const keyboardRow2 = keyboardItems.slice(14, 29);
-    const keyboardRow3 = keyboardItems.slice(29, 42);
-    const keyboardRow4 = keyboardItems.slice(42, 55);
-    const keyboardRow5 = keyboardItems.slice(55, 64);
+    const keyboardItemsTemaplates = this.generateKeyboardItemsTemaplate();
+    const keyboardRow1 = keyboardItemsTemaplates.slice(0, 14);
+    const keyboardRow2 = keyboardItemsTemaplates.slice(14, 29);
+    const keyboardRow3 = keyboardItemsTemaplates.slice(29, 42);
+    const keyboardRow4 = keyboardItemsTemaplates.slice(42, 55);
+    const keyboardRow5 = keyboardItemsTemaplates.slice(55, 64);
 
     return {
       keyboardRow1,
@@ -116,13 +128,13 @@ class VirtualKeyboard {
   }
 
   addKeyboardMouseDownHandler() {
-    const keyboard = document.getElementById('keyboard');
-    keyboard.addEventListener('mousedown', (e) => this.mouseDownKeyboardItem(e));
+    this.setThisKeyboard();
+    this.keyboard.addEventListener('mousedown', (e) => this.mouseDownKeyboardItem(e));
   }
 
   addKeyboardMouseUpHandler() {
-    const keyboard = document.getElementById('keyboard');
-    keyboard.addEventListener('mouseup', (e) => this.mouseUpKeyboardItem(e));
+    this.setThisKeyboard();
+    this.keyboard.addEventListener('mouseup', (e) => this.mouseUpKeyboardItem(e));
   }
 
   /* end event handlers functions */
@@ -131,8 +143,9 @@ class VirtualKeyboard {
   pressKeyboardItemDown(e) {
     e.preventDefault();
     this.setKeyboardTextareaFocus();
-    const keyboardItems = document.querySelectorAll('.keyboard__item');
-    const pressedKeyboardItem = [...keyboardItems].find((elem) => {
+    this.setThisKeyboardItems();
+
+    const pressedKeyboardItem = [...this.keyboardItems].find((elem) => {
       if (elem.dataset.code === e.code) {
         return elem;
       }
@@ -149,24 +162,25 @@ class VirtualKeyboard {
         break;
       case 'ControlLeft':
         if (e.altKey && e.ctrlKey) {
-          this.changeKeyboardLanguage(keyboardItems);
+          this.changeKeyboardLanguage(this.keyboardItems);
         }
         break;
       case 'ShiftLeft':
         if (!e.repeat) {
-          this.changeKeyboardItemsContent(e, keyboardItems);
+          this.changeKeyboardItemsContent(e, this.keyboardItems);
         }
         break;
       case 'CapsLock':
         this.toggleActiveClassCapsLockKeyboardItem(pressedKeyboardItem);
         if (!e.repeat) {
-          this.changeKeyboardItemsContent(e, keyboardItems);
+          this.changeKeyboardItemsContent(e, this.keyboardItems);
         }
         break;
       case 'Tab':
         this.processingTabKeyboardItem();
         break;
       case 'Delete':
+        this.processingDeleteKeyboardItem();
         break;
       case 'Enter':
         this.processingEnterKeyboardItem();
@@ -181,7 +195,7 @@ class VirtualKeyboard {
         break;
       case 'AltLeft':
         if (e.altKey && e.ctrlKey) {
-          this.changeKeyboardLanguage(keyboardItems);
+          this.changeKeyboardLanguage(this.keyboardItems);
         }
         break;
       default:
@@ -192,9 +206,8 @@ class VirtualKeyboard {
   pressKeyboardItemUp(e) {
     e.preventDefault();
 
-    // console.log(this);
-    // console.log(e);
-    const keyboardItems = document.querySelectorAll('.keyboard__item');
+    this.setThisKeyboardItems();
+
     this.removeActiveClassFromKeyboardItems();
     switch (e.code) {
       case 'Backspace':
@@ -203,7 +216,7 @@ class VirtualKeyboard {
         break;
       case 'ShiftLeft':
         if (!e.repeat) {
-          this.changeKeyboardItemsContent(e, keyboardItems);
+          this.changeKeyboardItemsContent(e, this.keyboardItems);
         }
         break;
       case 'CapsLock':
@@ -230,34 +243,112 @@ class VirtualKeyboard {
 
   mouseDownKeyboardItem(e) {
     e.preventDefault();
-    const keyboardItems = document.querySelectorAll('.keyboard__item');
-    // console.log(this);
-    // console.log(e);
-    let clickedElement;
+    // console.log(e.type);
+    this.setKeyboardTextareaFocus();
+    this.setThisKeyboardItems();
+
     if (e.target.classList.contains('keyboard__item')
         || e.target.classList.contains('key__content')) {
       if (e.target.classList.contains('keyboard__item')) {
-        clickedElement = e.target;
+        this.clickedElement = e.target;
       } else {
-        clickedElement = e.target.closest('.keyboard__item');
+        this.clickedElement = e.target.closest('.keyboard__item');
       }
-      this.addActiveClassToKeyboardItem(clickedElement);
-      if (clickedElement.dataset.code === 'CapsLock') {
-        this.toggleActiveClassCapsLockKeyboardItem(clickedElement);
+
+      this.addActiveClassToKeyboardItem(this.clickedElement);
+
+      switch (this.clickedElement.dataset.code) {
+        case 'Backspace':
+          this.processingBackspaceKeyboardItem();
+          break;
+        case 'ControlLeft':
+          this.leftCtrl = this.leftCtrl === 'off' ? 'on' : 'off';
+          if (this.leftCtrl === 'on' && this.leftAlt === 'on') {
+            this.changeKeyboardLanguage(this.keyboardItems);
+            this.leftCtrl = 'off';
+            this.leftAlt = 'off';
+          }
+          break;
+        case 'ShiftLeft':
+          this.shift = 'on';
+          this.changeKeyboardItemsContent(e, this.keyboardItems);
+          break;
+        case 'CapsLock':
+          this.toggleActiveClassCapsLockKeyboardItem(this.clickedElement);
+          this.changeKeyboardItemsContent(e, this.keyboardItems);
+          break;
+        case 'Tab':
+          this.processingTabKeyboardItem();
+          break;
+        case 'Delete':
+          this.processingDeleteKeyboardItem();
+          break;
+        case 'Enter':
+          this.processingEnterKeyboardItem();
+          break;
+        case 'ShiftRight':
+          break;
+        case 'ControlRight':
+          break;
+        case 'MetaLeft':
+          break;
+        case 'AltRight':
+          break;
+        case 'AltLeft':
+          this.leftAlt = this.leftAlt === 'off' ? 'on' : 'off';
+          if (this.leftCtrl === 'on' && this.leftAlt === 'on') {
+            this.changeKeyboardLanguage(this.keyboardItems);
+            this.leftCtrl = 'off';
+            this.leftAlt = 'off';
+          }
+          break;
+        default:
+          this.setKeyboardItemInnerTextToTextarea(this.clickedElement);
       }
     }
   }
 
   mouseUpKeyboardItem(e) {
+    // console.log(e.type);
     e.preventDefault();
-    // console.log(this);
-    // console.log(e);
-    if (e.target.classList.contains('keyboard__item') || e.target.classList.contains('key__content')) {
-      this.removeActiveClassFromKeyboardItems();
+    this.setThisKeyboardItems();
+    this.removeActiveClassFromKeyboardItems();
+
+    if (this.clickedElement) {
+      switch (this.clickedElement.dataset.code) {
+        case 'Backspace':
+          break;
+        case 'ControlLeft':
+          break;
+        case 'ShiftLeft':
+          console.log(this.shift);
+          this.shift = 'off';
+          this.changeKeyboardItemsContent(e, this.keyboardItems);
+          break;
+        case 'CapsLock':
+          break;
+        case 'Tab':
+          break;
+        case 'Delete':
+          break;
+        case 'Enter':
+          break;
+        case 'ShiftRight':
+          break;
+        case 'ControlRight':
+          break;
+        case 'MetaLeft':
+          break;
+        case 'AltRight':
+          break;
+        case 'AltLeft':
+          break;
+        default:
+      }
     }
   }
-  /* end handlers callback functions */
 
+  /* end handlers callback functions */
 
   /* virtual keyboard visual functions */
   addActiveClassToKeyboardItem(elem) {
@@ -266,9 +357,8 @@ class VirtualKeyboard {
   }
 
   removeActiveClassFromKeyboardItems() {
-    const keyboardItems = document.querySelectorAll('.keyboard__item');
-    this.keyboardItems = keyboardItems;
-    keyboardItems.forEach((elem) => {
+    this.setThisKeyboardItems();
+    this.keyboardItems.forEach((elem) => {
       elem.classList.remove('keyboard__item_active');
     });
   }
@@ -313,7 +403,7 @@ class VirtualKeyboard {
       // console.log(e);
       elem.querySelectorAll('.key__content').forEach((el) => {
         //   console.log(el);
-        if (!e.shiftKey) {
+        if (!e.shiftKey || this.shift === 'off') {
           if (this.capslock === 'on') {
             el.classList.add('hidden');
             if (el.classList.contains('case-on')) {
@@ -327,7 +417,7 @@ class VirtualKeyboard {
             }
           }
         }
-        if (e.shiftKey) {
+        if (e.shiftKey || this.shift === 'on') {
         //   console.log(elem.dataset);
           if (this.capslock === 'off') {
             el.classList.add('hidden');
@@ -354,7 +444,8 @@ class VirtualKeyboard {
 
   /* virtual keyboard main functions */
   setKeyboardTextareaFocus() {
-    document.getElementById('input').focus();
+    this.textarea = document.getElementById('input');
+    this.textarea.focus();
   }
 
   getKeyboardItemInnerText(item) {
@@ -363,26 +454,36 @@ class VirtualKeyboard {
   }
 
   setKeyboardItemInnerTextToTextarea(item) {
-    const textarea = document.getElementById('input');
-    textarea.value += this.getKeyboardItemInnerText(item);
+    this.textarea.setRangeText(this.getKeyboardItemInnerText(item),
+      this.textarea.selectionStart, this.textarea.selectionEnd, 'end');
   }
 
   processingEnterKeyboardItem() {
-    const textarea = document.getElementById('input');
-    this.textarea = textarea;
-    textarea.value += '\n';
+    this.textarea.setRangeText('\n',
+      this.textarea.selectionStart, this.textarea.selectionEnd, 'end');
   }
 
   processingTabKeyboardItem() {
-    const textarea = document.getElementById('input');
-    this.textarea = textarea;
-    textarea.value += '    ';
+    this.textarea.setRangeText('    ',
+      this.textarea.selectionStart, this.textarea.selectionEnd, 'end');
   }
 
   processingBackspaceKeyboardItem() {
-    const textarea = document.getElementById('input');
-    this.textarea = textarea;
-    textarea.value = textarea.value.slice(0, -1);
+    const textarea = [...this.textarea.value];
+    const { selectionStart } = this.textarea;
+    textarea.splice(this.textarea.selectionStart - 1, 1);
+    this.textarea.value = textarea.join('');
+    this.textarea.selectionStart = selectionStart - 1;
+    this.textarea.selectionEnd = selectionStart - 1;
+  }
+
+  processingDeleteKeyboardItem() {
+    const textarea = [...this.textarea.value];
+    const { selectionStart } = this.textarea;
+    textarea.splice(this.textarea.selectionStart, 1);
+    this.textarea.value = textarea.join('');
+    this.textarea.selectionStart = selectionStart;
+    this.textarea.selectionEnd = selectionStart;
   }
   /* end virtual keyboar main functions */
 }
