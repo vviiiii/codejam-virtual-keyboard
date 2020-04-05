@@ -146,7 +146,7 @@ class VirtualKeyboard {
     this.setThisKeyboardItems();
 
     const pressedKeyboardItem = [...this.keyboardItems].find((elem) => {
-      if (elem.dataset.code === e.code) {
+      if (elem.dataset && elem.dataset.code === e.code) {
         return elem;
       }
       return undefined;
@@ -155,7 +155,9 @@ class VirtualKeyboard {
     // console.log(this);
     // console.log(e);
 
-    this.addActiveClassToKeyboardItem(pressedKeyboardItem);
+    if (pressedKeyboardItem) {
+      this.addActiveClassToKeyboardItem(pressedKeyboardItem);
+    }
     switch (e.code) {
       case 'Backspace':
         this.processingDeleteBackspaceKeyboardItem('Backspace');
@@ -214,7 +216,9 @@ class VirtualKeyboard {
         this.processingArrowKeyboardItem('ArrowDown');
         break;
       default:
-        this.setKeyboardItemInnerTextToTextarea(pressedKeyboardItem);
+        if (pressedKeyboardItem) {
+          this.setKeyboardItemInnerTextToTextarea(pressedKeyboardItem);
+        }
     }
   }
 
@@ -273,7 +277,9 @@ class VirtualKeyboard {
         this.clickedElement = e.target.closest('.keyboard__item');
       }
 
-      this.addActiveClassToKeyboardItem(this.clickedElement);
+      if (this.clickedElement) {
+        this.addActiveClassToKeyboardItem(this.clickedElement);
+      }
 
       switch (this.clickedElement.dataset.code) {
         case 'Backspace':
