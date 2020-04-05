@@ -186,6 +186,9 @@ class VirtualKeyboard {
         this.processingEnterKeyboardItem();
         break;
       case 'ShiftRight':
+        if (!e.repeat) {
+          this.changeKeyboardItemsContent(e, this.keyboardItems);
+        }
         break;
       case 'ControlRight':
         break;
@@ -240,6 +243,9 @@ class VirtualKeyboard {
       case 'Enter':
         break;
       case 'ShiftRight':
+        if (!e.repeat) {
+          this.changeKeyboardItemsContent(e, this.keyboardItems);
+        }
         break;
       case 'ControlRight':
         break;
@@ -299,6 +305,8 @@ class VirtualKeyboard {
           this.processingEnterKeyboardItem();
           break;
         case 'ShiftRight':
+          this.shift = 'on';
+          this.changeKeyboardItemsContent(e, this.keyboardItems);
           break;
         case 'ControlRight':
           break;
@@ -345,7 +353,6 @@ class VirtualKeyboard {
         case 'ControlLeft':
           break;
         case 'ShiftLeft':
-          console.log(this.shift);
           this.shift = 'off';
           this.changeKeyboardItemsContent(e, this.keyboardItems);
           break;
@@ -358,6 +365,8 @@ class VirtualKeyboard {
         case 'Enter':
           break;
         case 'ShiftRight':
+          this.shift = 'off';
+          this.changeKeyboardItemsContent(e, this.keyboardItems);
           break;
         case 'ControlRight':
           break;
