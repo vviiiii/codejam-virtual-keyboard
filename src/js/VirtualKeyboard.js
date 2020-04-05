@@ -58,8 +58,8 @@ class VirtualKeyboard {
   /* Generate keyboardItems template */
   generateKeyboardItemsTemaplate() {
     const keyboardItemsArr = [];
-    this.data.forEach((keyButton) => {
-      const keyboardItem = new KeyboardItem(keyButton);
+    this.data.forEach((data) => {
+      const keyboardItem = new KeyboardItem(data, this.lang);
       keyboardItemsArr.push(keyboardItem.generateKeyboardItemTemplate());
     });
     return keyboardItemsArr;
@@ -396,6 +396,8 @@ class VirtualKeyboard {
 
   changeKeyboardLanguage(items) {
     this.lang = this.lang === 'ru' ? 'en' : 'ru';
+    this.setKeyboardLangToLocalStorage();
+
     const keyboardLangIndicator = document.querySelector('.keyboard__lang > span');
     keyboardLangIndicator.innerHTML = this.lang;
     [...items].forEach((elem) => {
@@ -417,6 +419,10 @@ class VirtualKeyboard {
         });
       }
     });
+  }
+
+  setKeyboardLangToLocalStorage() {
+    window.localStorage.setItem('lang', this.lang);
   }
 
   changeKeyboardItemsContent(e, items) {

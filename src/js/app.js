@@ -1,22 +1,18 @@
-/* Imports */
-// const dataModule = require('./data');
-// const keyBoardModule = require('./Keyboard');
-
-// const KeyBoard = keyBoardModule.default;
-// const keys = dataModule.default;
-
-// window.addEventListener('DOMContentLoaded', () => {
-//   const virtualKeyboard = new KeyBoard('ru', keys);
-//   virtualKeyboard.buildKeyboard();
-// });
-
 const dataModule = require('./data');
 const keyBoardModule = require('./VirtualKeyboard');
 
 const data = dataModule.default;
 const VirtualKeyBoard = keyBoardModule.default;
 
+const setKeyboardLangToLocalStorage = () => {
+  const localStorageContentLang = window.localStorage.getItem('lang');
+  window.localStorage.setItem('lang', localStorageContentLang || 'ru');
+};
+
+const getKeyboardLangFromLocalStorage = () => window.localStorage.getItem('lang');
+
 window.addEventListener('DOMContentLoaded', () => {
-  const virtualKeyboard = new VirtualKeyBoard('ru', data);
+  setKeyboardLangToLocalStorage();
+  const virtualKeyboard = new VirtualKeyBoard(getKeyboardLangFromLocalStorage(), data);
   virtualKeyboard.buildKeyboard();
 });
