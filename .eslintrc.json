@@ -1,8 +1,0 @@
-{
-  "extends": ["airbnb-base"],
-  "parser": "babel-eslint",
-  "globals": { "window": true, "document": true, "console": true },
-  "rules": {
-    "no-console": 0
-  }
-}
