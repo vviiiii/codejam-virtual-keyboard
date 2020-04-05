@@ -1,4 +1,4 @@
-class KeyboardItem {
+class VirtualKeyboardItem {
   constructor({ code, lang }, keyboardLang) {
     this.code = code;
     this.lang = lang;
@@ -33,4 +33,4 @@ class KeyboardItem {
   }
 }
 
-export { KeyboardItem as default };
+export { VirtualKeyboardItem as default };

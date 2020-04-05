@@ -1,6 +1,4 @@
-const virtualKeyButtonModule = require('./VirtualKeyboardItem');
-
-const KeyboardItem = virtualKeyButtonModule.default;
+import VirtualKeyboardItem from './VirtualKeyboardItem';
 
 class VirtualKeyboard {
   constructor(lang, data) {
@@ -19,7 +17,6 @@ class VirtualKeyboard {
     this.bindEventsHandlers();
     this.setThisKeyboardItems();
     this.setThisKeyboard();
-    // console.info(this);
   }
 
   setThisKeyboard() {
@@ -59,7 +56,7 @@ class VirtualKeyboard {
   generateKeyboardItemsTemaplate() {
     const keyboardItemsArr = [];
     this.data.forEach((data) => {
-      const keyboardItem = new KeyboardItem(data, this.lang);
+      const keyboardItem = new VirtualKeyboardItem(data, this.lang);
       keyboardItemsArr.push(keyboardItem.generateKeyboardItemTemplate());
     });
     return keyboardItemsArr;
@@ -151,9 +148,6 @@ class VirtualKeyboard {
       }
       return undefined;
     });
-
-    // console.log(this);
-    // console.log(e);
 
     if (pressedKeyboardItem) {
       this.addActiveClassToKeyboardItem(pressedKeyboardItem);
@@ -265,7 +259,6 @@ class VirtualKeyboard {
 
   mouseDownKeyboardItem(e) {
     e.preventDefault();
-    // console.log(e.type);
     this.setKeyboardTextareaFocus();
     this.setThisKeyboardItems();
 
@@ -347,7 +340,6 @@ class VirtualKeyboard {
   }
 
   mouseUpKeyboardItem(e) {
-    // console.log(e.type);
     e.preventDefault();
     this.setThisKeyboardItems();
     this.removeActiveClassFromKeyboardItems();
@@ -416,7 +408,6 @@ class VirtualKeyboard {
     const keyboardLangIndicator = document.querySelector('.keyboard__lang > span');
     keyboardLangIndicator.innerHTML = this.lang;
     [...items].forEach((elem) => {
-    //   console.error(elem.querySelectorAll('.key.lang-ru'));
       if (this.lang === 'ru') {
         elem.querySelectorAll('.key.lang-ru').forEach((el) => {
           el.classList.remove('hidden');
@@ -444,10 +435,9 @@ class VirtualKeyboard {
     const shiftDataSet = ['Digit0', 'Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5',
       'Digit6', 'Digit7', 'Digit8', 'Digit9', 'Minus', 'Equal', 'BracketLeft',
       'BracketRight', 'Backslash', 'Semicolon', 'Quote', 'Comma', 'Period', 'Slash'];
+
     [...items].forEach((elem) => {
-      // console.log(e);
       elem.querySelectorAll('.key__content').forEach((el) => {
-        //   console.log(el);
         if (!e.shiftKey || this.shift === 'off') {
           if (this.capslock === 'on') {
             el.classList.add('hidden');
@@ -463,7 +453,6 @@ class VirtualKeyboard {
           }
         }
         if (e.shiftKey || this.shift === 'on') {
-        //   console.log(elem.dataset);
           if (this.capslock === 'off') {
             el.classList.add('hidden');
             if (el.classList.contains('shift')) {
